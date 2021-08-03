@@ -31,7 +31,7 @@
 
 ## Запуск программы
 
-```
+```Bash
 spark-submit crimes_in_boston.py [path to offense_codes.csv] [path to crime.csv] [path to output_folder]
 ```
 
