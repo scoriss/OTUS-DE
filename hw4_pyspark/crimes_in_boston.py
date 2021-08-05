@@ -3,6 +3,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 from pyspark.sql import Window
 
+
 def main():
     # Создаем spark-сессию
     spark = SparkSession.builder.master("local[*]").appName("crimes_in_boston").getOrCreate()
@@ -31,12 +32,12 @@ def main():
     # Сразу оставляем только необходимые столбцы из датасета
     # 1765 строк с пустыми значениями поля DISTRICT. Заменим такие значения на N/A и проведем расчет витрины
     df_crime = df_crime_src.select("DISTRICT", "YEAR", "MONTH", "OFFENSE_CODE", "Lat", "Long") \
-        .withColumn('DISTRICT', when(df_crime_src.DISTRICT.isNull() , 'N/A') \
-        .otherwise(df_crime_src.DISTRICT)) 
+        .withColumn('DISTRICT', when(df_crime_src.DISTRICT.isNull(), 'N/A') \
+                    .otherwise(df_crime_src.DISTRICT))
 
     # Объединяем набор данных df_crime с df_codes
     # df_crime = df_crime.join(broadcast(df_codes), df_crime['OFFENSE_CODE'] == df_codes['CODE']) \
-    df_crime = df_crime.join(df_codes, df_crime['OFFENSE_CODE'] == df_codes['CODE']) \
+    df_crime = df_crime.join(broadcast(df_codes), df_crime['OFFENSE_CODE'] == df_codes['CODE']) \
         .drop("CODE", "NAME") \
         .cache()
 
@@ -57,7 +58,7 @@ def main():
     df_crimes_lat_lng = df_crime.where("(Lat<>-1 AND Long<>-1) AND Lat IS NOT NULL AND Long IS NOT NULL") \
         .groupBy(col("DISTRICT")) \
         .agg(avg(col("Lat")).alias("lat"), avg(col("Long")).alias("lng")) \
-        .withColumnRenamed("DISTRICT","DISTRICT_ID") \
+        .withColumnRenamed("DISTRICT", "DISTRICT_ID") \
         .orderBy(col("DISTRICT")) \
         .cache()
 
@@ -78,7 +79,8 @@ def main():
     #     объединенных через запятую с одним пробелом ", " , расположенных в порядке убывания частоты
     df_frequent_crime_types = df_crime.groupBy("DISTRICT", "CRIME_TYPE") \
         .agg(count("*").alias("crimes_by_crime_type")) \
-        .withColumn("row_num", row_number().over(Window.partitionBy("DISTRICT").orderBy(col("crimes_by_crime_type").desc()))) \
+        .withColumn("row_num",
+                    row_number().over(Window.partitionBy("DISTRICT").orderBy(col("crimes_by_crime_type").desc()))) \
         .filter(col("row_num") <= 3).drop("row_num", "crimes_by_crime_type") \
         .groupBy("DISTRICT") \
         .agg(concat_ws(", ", collect_list(col("CRIME_TYPE"))).alias("frequent_crime_types")) \
@@ -108,6 +110,7 @@ def main():
 
     # Останавливаем spark-сессию
     spark.stop()
+
 
 if __name__ == "__main__":
     # Проверяем аргументы вызова программы

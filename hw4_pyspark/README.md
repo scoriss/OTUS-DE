@@ -25,14 +25,14 @@
 3. Сохранить витрину в один файл в формате .parquet в папке path/to/output_folder.
 
 ## Файлы
-* [crimes_in_boston.py](crimes_in_boston.py) - Программа построения витрины на PySpark.
+* **[crimes_in_boston.py](crimes_in_boston.py)** - Программа построения витрины на PySpark.
 
-* [crimes_in_boston_analysis.ipynb](crimes_in_boston_analysis.ipynb) - Notebook с предварительным анализом и обработкой данных для построения витрины.
+* **[crimes_in_boston_analysis.ipynb](crimes_in_boston_analysis.ipynb)** - Notebook с предварительным анализом и обработкой данных для построения витрины.
 
 ## Запуск программы
 
 ```Bash
-spark-submit crimes_in_boston.py [path to offense_codes.csv] [path to crime.csv] [path to output_folder]
+spark-submit crimes_in_boston.py <path to offense_codes.csv> <path to crime.csv> <path to output_folder>
 ```
 
 Параметры запуска:

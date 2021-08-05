@@ -12,3 +12,6 @@ hw3_nifi
 
 # Log files
 *.log
+
+# Python
+__pycache__
