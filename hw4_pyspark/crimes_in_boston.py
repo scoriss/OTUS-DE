@@ -36,7 +36,6 @@ def main():
                     .otherwise(df_crime_src.DISTRICT))
 
     # Объединяем набор данных df_crime с df_codes
-    # df_crime = df_crime.join(broadcast(df_codes), df_crime['OFFENSE_CODE'] == df_codes['CODE']) \
     df_crime = df_crime.join(broadcast(df_codes), df_crime['OFFENSE_CODE'] == df_codes['CODE']) \
         .drop("CODE", "NAME") \
         .cache()
