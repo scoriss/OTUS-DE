@@ -6,6 +6,8 @@ hw4_pyspark/output
 # Future HW folder
 hw2_airflow
 hw3_nifi
+hw5_dbt_datavault
+hw6_metabase_bi
 
 # Jupyter Notebook
 .ipynb_checkpoints
