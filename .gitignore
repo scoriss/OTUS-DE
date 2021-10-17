@@ -3,6 +3,11 @@ hw4_pyspark/data/*
 !hw4_pyspark/data/.gitkeep
 hw4_pyspark/output
 
+
+
+hw8_model_production/reports/*.csv
+!hw8_model_production/data/.gitkeep
+
 # Future HW folder
 hw2_airflow
 hw3_nifi
@@ -17,3 +22,15 @@ hw6_metabase_bi
 
 # Python
 __pycache__
+
+# Pycharm
+.idea
+
+# VS Code
+.vscode/
+
+# Mac OS-specific storage files
+.DS_Store
+
+# Credentials
+.env
