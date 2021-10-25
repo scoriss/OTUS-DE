@@ -1,0 +1,22 @@
+.git/*
+.cache/*
+
+.idea/
+.vscode/
+
+.dockerignore
+.env
+.gitignore
+docker-compose.yml
+dockerfile
+
+
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+
+# Project files
+README.md
+notebooks/
+references/
+reports/
+samples/
