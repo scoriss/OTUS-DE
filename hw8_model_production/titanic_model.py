@@ -1,7 +1,5 @@
-# titanic_model.py
 import os
 import errno
-from typing import NoReturn
 os.environ["OMP_NUM_THREADS"] = "4"
 os.environ["OPENBLAS_NUM_THREADS"] = "4"
 os.environ["MKL_NUM_THREADS"] = "4"
@@ -12,20 +10,16 @@ import click
 import joblib
 import numpy as np
 from pathlib import Path, PurePath
-from flask import Flask, request, jsonify
 
 from titanic_model.logger import LOGGER
 from titanic_model.data import load_data
 from titanic_model.preprocess import preprocess_data
 from titanic_model.model import *
 
-
 MODEL_PARAMS = None
 MODEL_DATA = None
 MODEL = None
 MODEL_COLUMNS = None
-
-FLASK_APP = Flask(__name__)
 
 def load_model_data():
     global MODEL_PARAMS
@@ -75,13 +69,18 @@ def predict_from_dump() -> np.ndarray:
 
 @click.group()
 def cli():
-    """Titanic model program that predicts which passengers survived the Titanic shipwreck."""
+    """
+    Titanic model program that predicts which passengers survived the Titanic shipwreck.
+    """
     pass
 
-@cli.command()
+@cli.command(short_help='-  Train Titanic model')
 @click.argument('config_file', required=True, type=click.Path(exists=True))
 def train(config_file):
-    """- Train Titanic model"""
+    """Train Titanic model
+
+    CONFIG_FILE - Path to YAML file of model config settings.
+    """
     global MODEL_PARAMS
     global MODEL_DATA
     global MODEL
@@ -102,28 +101,14 @@ def train(config_file):
     MODEL = train_model(MODEL_DATA, MODEL_PARAMS.train_params, True)
     save_serialized_model()
     LOGGER.info("Train model complete!")
-    
 
-@cli.command()
-@click.argument('config_file', required=True, type=click.Path(exists=True))
-def serve(config_file):
-    """- Serve REST API"""
-    global MODEL_PARAMS
-
-    click.echo('RUN COMMAND - Serve Titanic model')
-    click.echo('YAML model configuration file: '+click.format_filename(config_file))
-    LOGGER.info('Start serving model...')
-
-    MODEL_PARAMS = read_model_training_params(config_file)
-    LOGGER.info('Load model parameters from YAML configuration file')
-
-    LOGGER.info(f"Start serving model with params {MODEL_PARAMS}")
-
-
-@cli.command()
+@cli.command(short_help='-  Predict model result')
 @click.argument('config_file', required=True, type=click.Path(exists=True))
 def predict(config_file):
-    """- Predict model result"""
+    """Predict model result
+
+    CONFIG_FILE - Path to YAML file of model config settings.
+    """
     global MODEL_PARAMS
 
     click.echo('RUN COMMAND - Predict model result')
@@ -137,6 +122,17 @@ def predict(config_file):
     LOGGER.info("Predict result...")
     predict_result = predict_from_dump()
     LOGGER.info("Predict result complete!")
+
+@cli.command(short_help='-  Serve model REST API')
+@click.argument('config_file', required=True, type=click.Path(exists=True))
+def serve(config_file):
+    """Serve model REST API
+
+    CONFIG_FILE - Path to YAML file of model config settings.
+    """
+    global MODEL_PARAMS
+    MODEL_PARAMS = read_model_training_params(config_file)
+    deploy_api(MODEL_PARAMS, Path(__file__).resolve().parent)
 
 
 if __name__ == '__main__':

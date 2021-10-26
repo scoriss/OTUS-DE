@@ -4,7 +4,8 @@ test_data_path: "data/test.csv"
 model_dump_path: "models/model.bin"
 column_dump_path: "models/columns.bin"
 
-predict_report_path: "reports/Titanic Predictions.csv"
+predict_report_path: "reports/titanic_predictions.csv"
+
 train_params:
   model_type: "RandomForestClassifier"
   criterion: "entropy"
@@ -15,3 +16,5 @@ train_params:
   oob_score: True
   random_state: 1
   n_jobs: -1
+
+model_api_port: 5555

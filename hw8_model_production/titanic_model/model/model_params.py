@@ -12,6 +12,7 @@ class TitanicModelParams:
     column_dump_path: str
     predict_report_path: str
     train_params: TrainingParams
+    model_api_port: int
 
 ModelTrainingParamsSchema = class_schema(TitanicModelParams)
 
