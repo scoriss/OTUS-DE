@@ -29,13 +29,13 @@
     При выполнении будет собран docker-образ **otus-de-hw8:1.0** и поднят контейнер **titanic-model**
 * Локальная установка:<br><br>
     ```Bash 
-    python -m venv .titanic_model
-    source .titanic_model/bin/activate
+    python -m venv .venv
+    source .venv/bin/activate
     pip install -r requirements.txt
     python setup.py install
     ```
 
-### Использование:
+### Использование
 Запуск работы модели и REST-сервиса производится через python-код **[titanic_model.py](titanic_model.py)** реализующий консольное приложение.<br>
 <details><summary>Скриншот консольного приложения</summary><br>
 
