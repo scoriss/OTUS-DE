@@ -1,4 +1,6 @@
 # OTUS-DE
+hw3_nifi/nifi
+
 hw4_pyspark/data/*
 !hw4_pyspark/data/.gitkeep
 hw4_pyspark/output
@@ -8,7 +10,6 @@ hw8_model_production/models/*.bin
 hw8_model_production/tests/*.bin
 
 # Future HW folder
-hw2_airflow
 hw3_nifi
 hw5_dbt_datavault
 hw6_metabase_bi
